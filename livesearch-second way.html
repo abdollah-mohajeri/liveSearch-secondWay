@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لیست جستجو</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+            padding: 20px;
+        }
+        
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            margin-bottom: 10px;
+        }
+        
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        ul li {
+            padding: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        
+        ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>لیست جستجو</h1>
+    <input type="text" id="searchInput" placeholder="جستجو..." oninput="filterList(this.value)">
+    <div>
+        <input type="checkbox" id="caseSensitive" onchange="filterList(document.getElementById('searchInput').value)">
+        <label for="caseSensitive">حساس به حروف کوچک و بزرگ</label>
+    </div>
+    <ul id="nameList">
+        <li><a href="https://example.com/ali">ali</a></li>
+        <li><a href="https://example.com/reza">REZA</a></li>
+        <li><a href="https://example.com/ali">ALI</a></li>
+        <li><a href="https://example.com/mohamad">mohamad</a></li>
+        <li><a href="https://example.com/babak">babak</a></li>
+        <li><a href="https://example.com/tavakol">tavakol</a></li>
+        <li><a href="https://example.com/hassan">Hassan</a></li>
+        <li><a href="https://example.com/meysam">meysam</a></li>
+    </ul>
+    <script>
+        function filterList(str) {
+            const caseSensitive = document.getElementById('caseSensitive');
+            const nameList = document.getElementById('nameList');
+            const listItems = nameList.getElementsByTagName('li'); // دریافت تمام تگ‌های li
+
+            const isCaseSensitive = caseSensitive.checked;
+
+            for (let i = 0; i < listItems.length; i++) {
+
+                const linkElement = listItems[i].getElementsByTagName('a')[0]; // پیدا کردن تگ <a> درون li  //می توانیم بجای تگ نیم از کوئری سلکتور استفاد کنیم//const linkElement = listItems[i].querySelector('a');      
+                const itemName = linkElement ? linkElement.textContent : ''; // گرفتن متن لینک
+
+                let startsWith = false;
+
+                // بررسی حساسیت به حروف بزرگ و کوچک
+                if (isCaseSensitive) {
+                    if (itemName.indexOf(str) === 0) {
+                        startsWith = true;
+                    }
+                } else {
+                    if (itemName.toLowerCase().indexOf(str.toLowerCase()) === 0) {
+                        startsWith = true;
+                    }
+                }
+
+                // تعیین نمایش یا عدم نمایش آیتم
+                if (startsWith) {
+                    listItems[i].style.display = 'block';
+                } else {
+                    listItems[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
